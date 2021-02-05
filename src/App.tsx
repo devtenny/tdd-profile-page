@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import ImageContainer from './ImageConatiner';
+import {ImageData} from './types';
+
+import {
+  useProfileImage,
+} from './hooks';
 
 function App() {
+  const images = useProfileImage<ImageData>();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ImageContainer images={images} minImageCount={3} />
     </div>
   );
 }
+
 
 export default App;
