@@ -1,21 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import ImageContainer from './ImageConatiner';
-import {ImageData} from './types';
+import { ImageData } from './types';
 
-import {
-  useProfileImage,
-} from './hooks';
+import { useProfileImage } from './hooks';
+import Username from './Username';
 
 function App() {
   const images = useProfileImage<ImageData>();
 
   return (
     <div className="App">
-      <ImageContainer images={images} minImageCount={3} />
+      <Username />
+      <ImageContainer images={images} minImageCount={3} maxImageCount={12} />
     </div>
   );
 }
-
 
 export default App;
