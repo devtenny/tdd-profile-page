@@ -20,6 +20,7 @@ import DisplayShortBio, {
   Mbti,
   ColorBtn,
   MbtiBtn,
+  LastnameBtn,
 } from '../src/DisplayShortBio';
 
 describe('App.tsx 컴퍼넌트 정상 출력', () => {
@@ -162,5 +163,10 @@ describe('소개 문구 텍스트 표시', () => {
   it('mbti 선택 버튼이 색상 개수만큼 출력된다.', () => {
     let wrapper = shallow(<DisplayShortBio />);
     expect(wrapper.find(MbtiBtn)).toHaveLength(4);
+  });
+
+  it('성씨 선택 버튼이 색상 개수만큼 출력된다.', () => {
+    let wrapper = shallow(<DisplayShortBio />);
+    expect(wrapper.find(LastnameBtn)).toHaveLength(4);
   });
 });

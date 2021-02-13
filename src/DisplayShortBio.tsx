@@ -16,6 +16,13 @@ export const Mbti = {
   ENFJ: 'ENFJ',
 } as const;
 
+export const Lastname = {
+  KIM: '김',
+  LEE: '이',
+  PARK: '박',
+  CHOI: '최',
+} as const;
+
 export interface SentenceKeywordType {
   color: typeof Color[keyof typeof Color];
   mbti: typeof Mbti[keyof typeof Mbti];
@@ -37,6 +44,9 @@ const DisplayShortBio = () => {
       {Object.entries(Mbti).map(([key, value]) => (
         <MbtiBtn key={key}>{value}</MbtiBtn>
       ))}
+      {Object.entries(Lastname).map(([key, value]) => (
+        <LastnameBtn key={key}>{value}</LastnameBtn>
+      ))}
     </Container>
   );
 };
@@ -46,3 +56,4 @@ export default DisplayShortBio;
 const Container = styled.div``;
 export const ColorBtn = styled.button``;
 export const MbtiBtn = styled.button``;
+export const LastnameBtn = styled.button``;
