@@ -1,5 +1,5 @@
 import React from 'react';
-import { onClick, SubmitBtn } from './Username';
+import { onClick, SubmitBtn } from './UsernameContainer';
 
 interface PropType {
   defaultValue: string;

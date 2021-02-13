@@ -8,7 +8,7 @@ type Props = {
 
 export const onClick = () => {};
 
-const Username = ({ name, maxLength }: Props) => {
+const UsernameContainer = ({ name, maxLength }: Props) => {
   const [inputValue, setInputValue] = useState<string>('');
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,7 +17,7 @@ const Username = ({ name, maxLength }: Props) => {
 
   return (
     <Container className="Username">
-      <UsernameContainer>{name.slice(0, maxLength)}</UsernameContainer>
+      <Username>{name.slice(0, maxLength)}</Username>
       <UsernameInput
         value={inputValue}
         onChange={(event) => onChange(event)}
@@ -27,9 +27,9 @@ const Username = ({ name, maxLength }: Props) => {
   );
 };
 
-export default Username;
+export default UsernameContainer;
 
 const Container = styled.div``;
-export const UsernameContainer = styled.input``;
+export const Username = styled.input``;
 export const UsernameInput = styled.input``;
 export const SubmitBtn = styled.button``;

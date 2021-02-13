@@ -3,7 +3,7 @@ import ImageContainer from './ImageConatiner';
 import { ImageData } from './types';
 
 import { useProfileImage } from './hooks';
-import UsernameContainer from './Username';
+import UsernameContainer from './UsernameContainer';
 
 const App = () => {
   const images = useProfileImage<ImageData>();
