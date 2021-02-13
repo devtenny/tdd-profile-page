@@ -34,6 +34,9 @@ const DisplayShortBio = () => {
       {Object.entries(Color).map(([key, value]) => (
         <ColorBtn key={key}>{value}</ColorBtn>
       ))}
+      {Object.entries(Mbti).map(([key, value]) => (
+        <MbtiBtn key={key}>{value}</MbtiBtn>
+      ))}
     </Container>
   );
 };
@@ -42,3 +45,4 @@ export default DisplayShortBio;
 
 const Container = styled.div``;
 export const ColorBtn = styled.button``;
+export const MbtiBtn = styled.button``;

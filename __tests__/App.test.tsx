@@ -8,17 +8,18 @@ import ImageContainer, {
   PleaseUploadImages,
   MinImageCount,
 } from '../src/ImageConatiner';
-import Username, {
+import UsernameContainer, {
   UsernameInput,
   SubmitBtn,
-  UsernameContainer,
-} from '../src/Username';
+  Username,
+} from '../src/UsernameContainer';
 import DisplayShortBio, {
   makeSentence,
   SentenceKeywordType,
   Color,
   Mbti,
   ColorBtn,
+  MbtiBtn,
 } from '../src/DisplayShortBio';
 
 describe('App.tsx 컴퍼넌트 정상 출력', () => {
@@ -100,7 +101,9 @@ const maxUsernameLength = 12;
 
 const initializeUsernameWrapper = (name: string) => {
   let wrapper;
-  wrapper = shallow(<Username name={name} maxLength={maxUsernameLength} />);
+  wrapper = shallow(
+    <UsernameContainer name={name} maxLength={maxUsernameLength} />
+  );
   return wrapper;
 };
 
@@ -109,18 +112,16 @@ describe('사용자 이름 표시', () => {
     const name = '김태연';
     const wrapper = initializeUsernameWrapper(name);
 
-    expect(wrapper.find(UsernameContainer).text()).toEqual(name);
+    expect(wrapper.find(Username).text()).toEqual(name);
   });
 
   it('최대 글자수만큼만 출력된다.', () => {
     const wrapper = initializeUsernameWrapper('김태연김태연김태연김태연김태연');
 
-    expect(wrapper.find(UsernameContainer).text()).toHaveLength(
-      maxUsernameLength
-    );
+    expect(wrapper.find(Username).text()).toHaveLength(maxUsernameLength);
   });
 
-  const myModule = require('../src/Username');
+  const myModule = require('../src/UsernameContainer');
 
   it('최대 글자수만큼만 입력된다.', () => {
     const wrapper = initializeUsernameWrapper('');
@@ -156,5 +157,10 @@ describe('소개 문구 텍스트 표시', () => {
   it('색상 선택 버튼이 색상 개수만큼 출력된다.', () => {
     let wrapper = shallow(<DisplayShortBio />);
     expect(wrapper.find(ColorBtn)).toHaveLength(5);
+  });
+
+  it('mbti 선택 버튼이 색상 개수만큼 출력된다.', () => {
+    let wrapper = shallow(<DisplayShortBio />);
+    expect(wrapper.find(MbtiBtn)).toHaveLength(4);
   });
 });
