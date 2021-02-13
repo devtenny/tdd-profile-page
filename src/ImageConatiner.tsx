@@ -15,7 +15,7 @@ const ImageContainer: React.FC<PropType> = ({
   ...props
 }) => {
   return (
-    <Container>
+    <Container className="ImageContainer">
       {images.length < minImageCount && (
         <PleaseUploadImages>
           이미지를 <MinImageCount>{minImageCount}</MinImageCount>개 이상 올려
