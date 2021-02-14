@@ -18,10 +18,16 @@ import DisplayShortBio, {
   SentenceKeywordType,
   Color,
   Mbti,
+  Lastname,
   ColorBtn,
   MbtiBtn,
   LastnameBtn,
+  ColorBtnContainer,
+  MbtiBtnContainer,
+  LastnameBtnContainer,
+  UserSentence,
 } from '../src/DisplayShortBio';
+import { StyledComponent } from 'styled-components';
 
 describe('App.tsx 컴퍼넌트 정상 출력', () => {
   // it('모든 컴퍼넌트가 정상적으로 출력된다.', () => {
@@ -144,11 +150,15 @@ describe('사용자 이름 표시', () => {
 });
 
 describe('소개 문구 텍스트 표시', () => {
+  let wrapper = null;
+  beforeEach(() => {
+    wrapper = shallow(<DisplayShortBio />);
+  });
   it('키워드 3개가 문장 형식으로 표현된다.', () => {
     const sentenceKeyword: SentenceKeywordType = {
       color: Color.GREEN,
       mbti: Mbti.ENFJ,
-      lastName: '김',
+      lastname: Lastname.KIM,
     };
 
     expect(makeSentence(sentenceKeyword)).toEqual(
@@ -156,17 +166,41 @@ describe('소개 문구 텍스트 표시', () => {
     );
   });
   it('색상 선택 버튼이 색상 개수만큼 출력된다.', () => {
-    let wrapper = shallow(<DisplayShortBio />);
     expect(wrapper.find(ColorBtn)).toHaveLength(5);
   });
 
   it('mbti 선택 버튼이 색상 개수만큼 출력된다.', () => {
-    let wrapper = shallow(<DisplayShortBio />);
     expect(wrapper.find(MbtiBtn)).toHaveLength(4);
   });
 
   it('성씨 선택 버튼이 색상 개수만큼 출력된다.', () => {
-    let wrapper = shallow(<DisplayShortBio />);
     expect(wrapper.find(LastnameBtn)).toHaveLength(4);
+  });
+
+  const btnContainerFinder = (
+    container: StyledComponent<'div', any, {}, never>,
+    index: number
+  ) => {
+    return {
+      container: wrapper.find(container).childAt(index),
+      text: wrapper.find(container).childAt(index).text(),
+    };
+  };
+
+  it('키워드 3개를 모두 선택해야 소개 문구가 출력된다.', () => {
+    const color = btnContainerFinder(ColorBtnContainer, 0);
+    const mbti = btnContainerFinder(MbtiBtnContainer, 0);
+    const lastname = btnContainerFinder(LastnameBtnContainer, 0);
+
+    color.container.simulate('click');
+    expect(wrapper.find(UserSentence).text()).toEqual('');
+
+    mbti.container.simulate('click');
+    expect(wrapper.find(UserSentence).text()).toEqual('');
+
+    lastname.container.simulate('click');
+    expect(wrapper.find(UserSentence).text()).toEqual(
+      `${color.text}을 좋아하는 ${mbti.text}인 ${lastname.text}씨`
+    );
   });
 });
