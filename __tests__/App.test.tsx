@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import { ImageData } from '../src/types';
 import { v4 as uuidv4 } from 'uuid';
+import { StyledComponent } from 'styled-components';
 
 import App from '../src/App';
 import ImageContainer, {
@@ -27,7 +28,11 @@ import DisplayShortBio, {
   LastnameBtnContainer,
   UserSentence,
 } from '../src/DisplayShortBio';
-import { StyledComponent } from 'styled-components';
+import ImageEditor, {
+  BorderRadius,
+  BorderRadiusBtnContainer,
+  CustomImageContainer,
+} from '../src/ImageEditor';
 
 describe('App.tsx 컴퍼넌트 정상 출력', () => {
   // it('모든 컴퍼넌트가 정상적으로 출력된다.', () => {
@@ -150,7 +155,7 @@ describe('사용자 이름 표시', () => {
 });
 
 describe('소개 문구 텍스트 표시', () => {
-  let wrapper = null;
+  let wrapper: any = null;
   beforeEach(() => {
     wrapper = shallow(<DisplayShortBio />);
   });
@@ -201,6 +206,25 @@ describe('소개 문구 텍스트 표시', () => {
     lastname.container.simulate('click');
     expect(wrapper.find(UserSentence).text()).toEqual(
       `${color.text}을 좋아하는 ${mbti.text}인 ${lastname.text}씨`
+    );
+  });
+});
+
+describe('출력한 이미지의 모서리 스타일 지정', () => {
+  it('세 가지 presets을 선택할 수 있는 버튼이 출력된다.', () => {
+    let wrapper = shallow(<ImageEditor />);
+    expect(wrapper.find(BorderRadiusBtnContainer).children()).toHaveLength(3);
+  });
+  it('버튼을 클릭하면 해당 preset으로 모서리 스타일이 지정된다.', () => {
+    let wrapper = shallow(<ImageEditor />);
+    wrapper.find(BorderRadiusBtnContainer).childAt(0).simulate('click');
+
+    const Image = wrapper.find(CustomImageContainer).children().getElement()
+      .type['componentStyle']['rules'];
+
+    // 다른 방법으로 변경해야 함. (style에 접근하는 방향으로)
+    expect(Image.toString()).toMatch(
+      `border-radius: ,${BorderRadius.SQUARE},px`
     );
   });
 });
