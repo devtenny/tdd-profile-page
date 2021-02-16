@@ -69,37 +69,40 @@ const DisplayShortBio = () => {
         {color && mbti && lastname && makeSentence(keyword)}
       </UserSentence>
       <ColorBtnContainer>
-        {Object.entries(Color).map(([key, value]) => (
-          <ColorBtn
-            type="button"
-            key={key}
-            onClick={() => onClick('color', value)}
-          >
-            {value}
-          </ColorBtn>
-        ))}
+        {!color &&
+          Object.entries(Color).map(([key, value]) => (
+            <ColorBtn
+              type="button"
+              key={key}
+              onClick={() => onClick('color', value)}
+            >
+              {value}
+            </ColorBtn>
+          ))}
       </ColorBtnContainer>
       <MbtiBtnContainer>
-        {Object.entries(Mbti).map(([key, value]) => (
-          <MbtiBtn
-            type="button"
-            key={key}
-            onClick={() => onClick('mbti', value)}
-          >
-            {value}
-          </MbtiBtn>
-        ))}
+        {!mbti &&
+          Object.entries(Mbti).map(([key, value]) => (
+            <MbtiBtn
+              type="button"
+              key={key}
+              onClick={() => onClick('mbti', value)}
+            >
+              {value}
+            </MbtiBtn>
+          ))}
       </MbtiBtnContainer>
       <LastnameBtnContainer>
-        {Object.entries(Lastname).map(([key, value]) => (
-          <LastnameBtn
-            type="button"
-            key={key}
-            onClick={() => onClick('lastname', value)}
-          >
-            {value}
-          </LastnameBtn>
-        ))}
+        {!lastname &&
+          Object.entries(Lastname).map(([key, value]) => (
+            <LastnameBtn
+              type="button"
+              key={key}
+              onClick={() => onClick('lastname', value)}
+            >
+              {value}
+            </LastnameBtn>
+          ))}
       </LastnameBtnContainer>
     </Container>
   );
