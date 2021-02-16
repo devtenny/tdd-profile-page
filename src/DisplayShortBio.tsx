@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ColorPicker } from 'react-pick-color';
 import styled from 'styled-components';
 import { onClick } from './UsernameContainer';
 
@@ -51,6 +52,7 @@ const DisplayShortBio = () => {
   const [lastname, setLastname] = useState<
     typeof Lastname[keyof typeof Lastname] | null
   >(null);
+  const [shortBioTextColor, setShortBioTextColor] = useState<string>('BLACK');
 
   let keyword = {
     color: color,
@@ -65,9 +67,15 @@ const DisplayShortBio = () => {
 
   return (
     <Container>
-      <UserSentence>
+      <UserSentence style={{ color: shortBioTextColor }}>
         {color && mbti && lastname && makeSentence(keyword)}
       </UserSentence>
+      <ShortBioColorPicker
+        color={shortBioTextColor}
+        onChange={(color) => {
+          setShortBioTextColor(color.hex);
+        }}
+      />
       <ColorBtnContainer>
         {!color &&
           Object.entries(Color).map(([key, value]) => (
@@ -110,8 +118,11 @@ const DisplayShortBio = () => {
 
 export default DisplayShortBio;
 
-const Container = styled.div``;
+export const Container = styled.div``;
 export const UserSentence = styled.div``;
+
+export const ShortBioColorPicker = styled(ColorPicker)``;
+
 export const ColorBtn = styled.input``;
 export const MbtiBtn = styled.input``;
 export const LastnameBtn = styled.input``;

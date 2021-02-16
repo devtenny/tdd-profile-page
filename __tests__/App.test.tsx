@@ -1,9 +1,9 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { ImageData } from '../src/types';
 import { v4 as uuidv4 } from 'uuid';
 import { StyledComponent } from 'styled-components';
 
-import App from '../src/App';
+import App, { BackgroundColorPicker, Container } from '../src/App';
 import ImageContainer, {
   ImageCard,
   PleaseUploadImages,
@@ -13,6 +13,8 @@ import UsernameContainer, {
   UsernameInput,
   SubmitBtn,
   Username,
+  UsernameColorPicker,
+  Container as UsernameConatiner,
 } from '../src/UsernameContainer';
 import DisplayShortBio, {
   makeSentence,
@@ -27,6 +29,8 @@ import DisplayShortBio, {
   MbtiBtnContainer,
   LastnameBtnContainer,
   UserSentence,
+  ShortBioColorPicker,
+  Container as ShortBioContainer,
 } from '../src/DisplayShortBio';
 import ImageEditor, {
   BorderColorPicker,
@@ -35,14 +39,11 @@ import ImageEditor, {
   BorderWidth,
   BorderWidthBtnContainer,
   CustomImageContainer,
-  PaletteColor,
-  PaletteColorBtn,
-  PaletteColorBtnContainer,
+  PaletteBorderColorBtn,
+  PaletteBorderColorBtnContainer,
 } from '../src/ImageEditor';
-// import ColorPalette, {
-//   PaletteColorBtn,
-//   PaletteColorBtnContainer,
-// } from '../src/ColorPalette';
+
+import { PaletteColor } from '../src/PaletteColor';
 
 describe('App.tsx 컴퍼넌트 정상 출력', () => {
   // it('모든 컴퍼넌트가 정상적으로 출력된다.', () => {
@@ -220,72 +221,106 @@ describe('소개 문구 텍스트 표시', () => {
   });
 });
 
+const findComponentStyle = (wrapper: any, container: any) => {
+  return wrapper.find(container).childAt(0).getElement().props.style;
+};
+
 describe('출력한 이미지의 모서리 스타일 지정', () => {
+  let wrapper: any;
+  beforeEach(() => {
+    wrapper = shallow(<ImageEditor />);
+  });
   it('세가지 borderRadius presets을 선택할 수 있는 버튼이 출력된다.', () => {
-    let wrapper = shallow(<ImageEditor />);
     expect(wrapper.find(BorderRadiusBtnContainer).children()).toHaveLength(3);
   });
   it('버튼을 클릭하면 해당 preset으로 모서리 스타일이 지정된다.', () => {
-    let wrapper = shallow(<ImageEditor />);
     wrapper.find(BorderRadiusBtnContainer).childAt(0).simulate('click');
 
-    const Image = wrapper.find(CustomImageContainer).childAt(0).getElement()
-      .props.style;
+    const ImageComponentStyle = findComponentStyle(
+      wrapper,
+      CustomImageContainer
+    );
 
-    expect(Image.borderRadius).toMatch(`${BorderRadius.SQUARE}%`);
+    expect(ImageComponentStyle.borderRadius).toMatch(`${BorderRadius.SQUARE}%`);
   });
 });
 
 describe('출력한 이미지의 테두리 두께 지정.', () => {
+  let wrapper: any;
+  beforeEach(() => {
+    wrapper = shallow(<ImageEditor />);
+  });
   it('네가지 borderWidth presets을 선택할 수 있는 버튼이 출력된다.', () => {
-    let wrapper = shallow(<ImageEditor />);
     expect(wrapper.find(BorderWidthBtnContainer).children()).toHaveLength(4);
   });
   it('버튼을 클릭하면 해당 preset으로 테두리 두께가 지정된다.', () => {
-    let wrapper = shallow(<ImageEditor />);
-
-    const Image = wrapper.find(CustomImageContainer).childAt(0).getElement()
-      .props.style;
-
-    expect(Image.borderWidth).toMatch(`${BorderWidth.NONE}px`);
+    const ImageComponentStyle = findComponentStyle(
+      wrapper,
+      CustomImageContainer
+    );
+    expect(ImageComponentStyle.borderWidth).toMatch(`${BorderWidth.NONE}px`);
   });
 });
 
 describe('출력한 이미지의 테두리 색상 지정', () => {
+  let wrapper: any;
+  beforeEach(() => {
+    wrapper = shallow(<ImageEditor />);
+  });
   it('일곱가지 borderColor presets을 선택할 수 있는 버튼(팔렛트)이 출력된다.', () => {
-    let wrapper = shallow(<ImageEditor />);
-
-    expect(wrapper.find(PaletteColorBtn)).toHaveLength(7);
+    expect(wrapper.find(PaletteBorderColorBtn)).toHaveLength(7);
   });
   it('color picker 기능으로 테두리의 색상을 변경한다.', () => {
-    let wrapper = shallow(<ImageEditor />);
     wrapper.find(BorderColorPicker).simulate('change', { hex: '#d7197d' });
 
-    const Image = wrapper.find(CustomImageContainer).childAt(0).getElement()
-      .props.style;
-
-    expect(Image.borderColor).toMatch('#d7197d');
+    const ImageComponentStyle = findComponentStyle(
+      wrapper,
+      CustomImageContainer
+    );
+    expect(ImageComponentStyle.borderColor).toMatch('#d7197d');
   });
   it('color 팔렛트의 버튼을 클릭히면 테두리의 색상이 변경된다.', () => {
-    let wrapper = shallow(<ImageEditor />);
-    wrapper.find(PaletteColorBtnContainer).childAt(0).simulate('click');
+    wrapper.find(PaletteBorderColorBtnContainer).childAt(0).simulate('click');
 
-    const Image = wrapper.find(CustomImageContainer).childAt(0).getElement()
-      .props.style;
-
-    expect(Image.borderColor).toMatch(`${Object.keys(PaletteColor)[0]}`);
+    const ImageComponentStyle = findComponentStyle(
+      wrapper,
+      CustomImageContainer
+    );
+    expect(ImageComponentStyle.borderColor).toMatch(
+      `${Object.keys(PaletteColor)[0]}`
+    );
   });
 });
 
-// describe('페이지 UI 요소에 색상을 팔렛트에서 선택하거나 RGB값을 직접 입력하여 지정', () => {
-//   it('색상을 고를 수 있는 팔렛트가 출력된다.', () => {
-//     let wrapper = shallow(<ColorPalette onClick={() => {}} />);
-//     expect(wrapper.find(PaletteColorBtn)).toHaveLength(7);
-//     // console.log(
-//     //   wrapper.find(PaletteColorBtnContainer).childAt(0).getElement().props.style
-//     // );
-//   });
-// it('선택한 색상으로 배경의 색이 변경된다.', () => {});
-// it('선택한 색상으로 사용자 이름의 색이 변경된다.', () => {});
-// it('선택한 색상으로 소개 문구의 색이 변경된다.', () => {});
-// });
+describe('페이지 UI 요소에 색상을 팔렛트에서 선택하거나 RGB값을 직접 입력하여 지정', () => {
+  it('색상을 고를 수 있는 팔렛트(color picker)가 출력된다.', () => {
+    let wrapper = shallow(<App />);
+    expect(wrapper.find(BackgroundColorPicker)).toHaveLength(1);
+  });
+  it('선택한 색상으로 배경의 색이 변경된다.', () => {
+    let wrapper = shallow(<App />);
+    wrapper.find(BackgroundColorPicker).simulate('change', { hex: '#d7197d' });
+    const AppComponentStyle = wrapper.find(Container).getElement().props.style;
+    expect(AppComponentStyle.backgroundColor).toMatch('#d7197d');
+  });
+  it('선택한 색상으로 사용자 이름의 색이 변경된다.', () => {
+    let wrapper = shallow(
+      <UsernameContainer name={'김태연'} maxLength={maxUsernameLength} />
+    );
+    wrapper.find(UsernameColorPicker).simulate('change', { hex: '#d7197d' });
+    const UsernameComponentStyle = findComponentStyle(
+      wrapper,
+      UsernameConatiner
+    );
+    expect(UsernameComponentStyle.color).toMatch('#d7197d');
+  });
+  it('선택한 색상으로 소개 문구의 색이 변경된다.', () => {
+    let wrapper = shallow(<DisplayShortBio />);
+    wrapper.find(ShortBioColorPicker).simulate('change', { hex: '#d7197d' });
+    const ShortBioComponentStyle = findComponentStyle(
+      wrapper,
+      ShortBioContainer
+    );
+    expect(ShortBioComponentStyle.color).toMatch('#d7197d');
+  });
+});

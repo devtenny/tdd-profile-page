@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ColorPicker from 'react-pick-color';
-
-export const PaletteColor = {
-  RED: '빨강색',
-  ORANGE: '주황색',
-  YELLOW: '노랑색',
-  GREEN: '초록색',
-  BLUE: '파랑색',
-  BLACK: '검정색',
-  WHITE: '하얀색',
-} as const;
+import { PaletteColor } from './PaletteColor';
 
 export const BorderRadius = {
   SQUARE: 0,
@@ -75,16 +66,16 @@ const ImageEditor = () => {
         ))}
       </BorderWidthBtnContainer>
 
-      <PaletteColorBtnContainer>
+      <PaletteBorderColorBtnContainer>
         {Object.entries(PaletteColor).map(([key, value]) => (
-          <PaletteColorBtn
+          <PaletteBorderColorBtn
             type="button"
             key={key}
             style={{ backgroundColor: key }}
             onClick={() => onPaletteColorClick(key)}
           >
             {value}
-          </PaletteColorBtn>
+          </PaletteBorderColorBtn>
         ))}
         <BorderColorPicker
           color={borderColor}
@@ -92,7 +83,7 @@ const ImageEditor = () => {
             setBorderColor(color.hex);
           }}
         />
-      </PaletteColorBtnContainer>
+      </PaletteBorderColorBtnContainer>
     </Container>
   );
 };
@@ -106,6 +97,6 @@ export const BorderRadiusBtnContainer = styled.div``;
 const BorderRadiusBtn = styled.input``;
 export const BorderWidthBtnContainer = styled.div``;
 const BorderWidthBtn = styled.input``;
-export const PaletteColorBtn = styled.input``;
-export const PaletteColorBtnContainer = styled.div``;
+export const PaletteBorderColorBtn = styled.input``;
+export const PaletteBorderColorBtnContainer = styled.div``;
 export const BorderColorPicker = styled(ColorPicker)``;
