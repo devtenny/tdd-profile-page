@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import ColorPicker from 'react-pick-color';
+
+export const PaletteColor = {
+  RED: '빨강색',
+  ORANGE: '주황색',
+  YELLOW: '노랑색',
+  GREEN: '초록색',
+  BLUE: '파랑색',
+  BLACK: '검정색',
+  WHITE: '하얀색',
+} as const;
 
 export const BorderRadius = {
   SQUARE: 0,
@@ -7,34 +18,81 @@ export const BorderRadius = {
   CIRCLE: 100,
 } as const;
 
+export const BorderWidth = {
+  NONE: 0,
+  THIN: 3,
+  MEDIUM: 15,
+  THICK: 30,
+} as const;
+
 const ImageEditor = () => {
   const [borderRadius, setBorderRadius] = useState<number>(0);
-  const onClick = (value: typeof BorderRadius[keyof typeof BorderRadius]) => {
-    setBorderRadius(value);
+  const [borderWidth, setBorderWidth] = useState<number>(0);
+  const [borderColor, setBorderColor] = useState<string>('BLACK');
+
+  const onClick = (type: string, value: any) => {
+    if (type === 'radius') setBorderRadius(value);
+    else if (type === 'width') setBorderWidth(value);
+  };
+
+  const onPaletteColorClick = (color: any) => {
+    setBorderColor(color);
   };
 
   return (
     <Container>
       <CustomImageContainer>
-        {borderRadius === BorderRadius.SQUARE ? (
-          <SquareImage></SquareImage>
-        ) : borderRadius === BorderRadius.ROUNDED_SQUARE ? (
-          <RoundedSquareImage></RoundedSquareImage>
-        ) : (
-          <CircleImage></CircleImage>
-        )}
+        <CustomImage
+          style={{
+            borderRadius: `${borderRadius}%`,
+            borderWidth: `${borderWidth}px`,
+            borderColor: `${borderColor}`,
+          }}
+        ></CustomImage>
       </CustomImageContainer>
+
       <BorderRadiusBtnContainer>
         {Object.entries(BorderRadius).map(([key, value]) => (
           <BorderRadiusBtn
             type="button"
             key={key}
-            onClick={() => onClick(value)}
+            onClick={() => onClick('radius', value)}
           >
-            {value}
+            {key}
           </BorderRadiusBtn>
         ))}
       </BorderRadiusBtnContainer>
+
+      <BorderWidthBtnContainer>
+        {Object.entries(BorderWidth).map(([key, value]) => (
+          <BorderWidthBtn
+            type="button"
+            key={key}
+            onClick={() => onClick('width', value)}
+          >
+            {key}
+          </BorderWidthBtn>
+        ))}
+      </BorderWidthBtnContainer>
+
+      <PaletteColorBtnContainer>
+        {Object.entries(PaletteColor).map(([key, value]) => (
+          <PaletteColorBtn
+            type="button"
+            key={key}
+            style={{ backgroundColor: key }}
+            onClick={() => onPaletteColorClick(key)}
+          >
+            {value}
+          </PaletteColorBtn>
+        ))}
+        <BorderColorPicker
+          color={borderColor}
+          onChange={(color) => {
+            setBorderColor(color.hex);
+          }}
+        />
+      </PaletteColorBtnContainer>
     </Container>
   );
 };
@@ -43,14 +101,11 @@ export default ImageEditor;
 
 const Container = styled.div``;
 export const CustomImageContainer = styled.div``;
-export const SquareImage = styled.img`
-  border-radius: ${BorderRadius.SQUARE}px;
-`;
-export const RoundedSquareImage = styled.img`
-  border-radius: ${BorderRadius.ROUNDED_SQUARE}px;
-`;
-export const CircleImage = styled.img`
-  border-radius: ${BorderRadius.CIRCLE}%;
-`;
+export const CustomImage = styled.img``;
 export const BorderRadiusBtnContainer = styled.div``;
 const BorderRadiusBtn = styled.input``;
+export const BorderWidthBtnContainer = styled.div``;
+const BorderWidthBtn = styled.input``;
+export const PaletteColorBtn = styled.input``;
+export const PaletteColorBtnContainer = styled.div``;
+export const BorderColorPicker = styled(ColorPicker)``;
